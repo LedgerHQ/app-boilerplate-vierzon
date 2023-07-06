@@ -45,7 +45,7 @@ static char g_amount[30];
 // Buffer where the transaction address string is written
 static char g_address[43];
 
-static nbgl_layoutTagValue_t pairs[2];
+static nbgl_layoutTagValue_t pairs[3];
 static nbgl_layoutTagValueList_t pairList;
 static nbgl_pageInfoLongPress_t infoLongPress;
 
@@ -81,10 +81,12 @@ static void review_continue(void) {
     pairs[0].value = g_amount;
     pairs[1].item = "Address";
     pairs[1].value = g_address;
+    pairs[2].item = "Memo";
+    pairs[2].value = (const char *) G_context.tx_info.transaction.memo;
 
     // Setup list
     pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 2;
+    pairList.nbPairs = 3;
     pairList.pairs = pairs;
 
     // Info long press
