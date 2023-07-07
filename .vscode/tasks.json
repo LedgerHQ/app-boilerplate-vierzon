@@ -24,7 +24,7 @@
             "label": "Open dev-tools container terminal",
             "type": "shell",
             // Opens a terminal of the dev-tools container.
-            "command": "docker exec -it ${config:container_name} bash",
+            "command": "docker exec -u 0 -it ${config:container_name} bash",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -115,6 +115,17 @@
             "problemMatcher": []
         },
         {
+            "label": "Run functional tests (with display) - on device",
+            "type": "shell",
+            // Runs functional tests inside the docker container (with Qt display enabled).
+            "command": "docker exec -it ${config:container_name} bash -c 'pytest tests/ --tb=short -v --device ${input:model} --display --backend ledgerwallet'",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Install tests requirements",
             "type": "shell",
             // Installs functional tests python requirements in the docker container. 
@@ -139,6 +150,27 @@
             "osx" : {
                 // Side loads the app APDU file using ledgerblue runScript.
                 "command": "source ledger/bin/activate && python3 -m ledgerblue.runScript --scp --fileName ${config:buid_dir_relative_path}/bin/app.apdu --elfFile ${config:buid_dir_relative_path}/bin/app.elf",
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "Install app loading requirements"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Quick device onboarding",
+            "type": "shell",
+            "linux" : {
+                "command": "docker exec -it ${config:container_name} bash -c 'export BOLOS_SDK=$(echo ${input:sdk}) && python3 -m ledgerblue.hostOnboard --apdu --id 0 --pin ${input:pin} --prefix \"\" --passphrase \"\" --words \"${input:seed}\"'",
+            },
+            "windows" : {
+                "command": "cmd.exe /C '.\\ledger\\Scripts\\activate.bat && python -m ledgerblue.hostOnboard --apdu --id 0 --pin ${input:pin} --prefix \"\" --passphrase \"\" --words \"${input:seed}\"'",
+            },
+            "osx" : {
+                "command": "source ledger/bin/activate && python3 -m ledgerblue.hostOnboard --apdu --id 0 --pin ${input:pin} --prefix \"\" --passphrase \"\" --words \"${input:seed}\"",
             },
             "group": {
                 "kind": "build",
@@ -196,6 +228,18 @@
                 "nanosp",
                 "stax",
             ]
+        },
+        {
+            "id" : "seed",
+            "type": "promptString",
+            "description": "Enter seed phrase",
+            "default": "glory promote mansion idle axis finger extra february uncover one trip resource lawn turtle enact monster seven myth punch hobby comfort wild raise skin"
+        },
+        {
+            "id" : "pin",
+            "type": "promptString",
+            "description": "Enter password",
+            "default": "1234"
         }
     ]
 }
