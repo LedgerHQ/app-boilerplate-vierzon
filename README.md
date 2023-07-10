@@ -16,22 +16,20 @@ It will allow you, whether you are developing on macOS, Windows or Linux to quic
     * On macOS, install and launch [XQuartz](https://www.xquartz.org/) (make sure to go to XQuartz > Preferences > Security and check "Allow client connections").
     * On Windows, install and launch [VcXsrv](https://sourceforge.net/projects/vcxsrv/) (make sure to configure it to disable access control).
 * Install [VScode](https://code.visualstudio.com/download)
-* Open a terminal and clone `app-boilerplate` with `git clone git@github.com:LedgerHQ/app-boilerplate.git`.
-* Open the `app-boilerplate` folder with VSCode.
+* Open a terminal and clone `app-boilerplate-vierzon` with `git clone git@github.com:LedgerHQ/app-boilerplate.git`.
+* Open the `app-boilerplate-vierzon` folder with VSCode and install the recommended [Ledger VScode extension](https://marketplace.visualstudio.com/items?itemName=LedgerHQ.ledger-dev-tools).
+* Select to build for `Stax` by clicking on the target selection item of the VSCode status bar.
 * Open the vscode tasks with  `ctrl + shift + b` (`command + shift + b` on a Mac) and run the following actions :
     * Pull and run the [ledger-app-dev-tools](https://github.com/LedgerHQ/ledger-app-builder/pkgs/container/ledger-app-builder%2Fledger-app-dev-tools) docker image by selecting `Run dev-tools image`.
-    * Build the for the device model of your choice with `Build app`.
-    * Test your binary on [Speculos](https://github.com/LedgerHQ/speculos) with `Run Speculos`.
+    * Build the app with `Build app`.
+    * Execute functional tests with `Run functional tests`.
 
-:information_source: The VsCode tasks also allow you to perform the following actions :
+:information_source: The VsCode extension also allows you to perform the following actions :
 
-* Install functional tests Python requirements (mandatory before executing functional tests),
 * [Execute functional tests](#test),
 * Open a terminal in your docker container,
 * Clean build files,
 * Load the app on a physical device.
-
-You can find all the available tasks definitions in `.vscode/tasks.json`.
 
 ### With a terminal
 
@@ -156,7 +154,6 @@ You can use the following VsCode sequence of tasks (open the menu with `ctrl + s
 
 Then you can choose to execute the functional tests :
 
-* `Install tests requirements` to be executed once after you have run the dev-tools image, followed by,
 * `Run functional tests` and select the model you just built the app for.
 
 Or simply run the app on the Speculos emulator :
